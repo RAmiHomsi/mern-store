@@ -24,6 +24,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://keen-malabi-f3e7cb.netlify.app",
+      "https://mern-store-front-v2ax.onrender.com",
       "https://mern-store-9oc8.onrender.com",
       "https://mern-store-9oc8.onrender.com/api",
     ],
