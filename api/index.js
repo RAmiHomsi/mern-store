@@ -23,8 +23,8 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://rami-mern-e-store.vercel.app",
-      "https://rami-mern-e-store.vercel.app/api",
+      "https://mern-store-9oc8.onrender.com",
+      "https://mern-store-9oc8.onrender.com/api",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
