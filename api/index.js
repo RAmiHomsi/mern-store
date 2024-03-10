@@ -1,12 +1,13 @@
 // packages
 import express from "express";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 //import path from "path";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from "path";
 
 // Utiles
-import connectDB from "./config/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
@@ -16,18 +17,23 @@ import orderRoutes from "./routes/orderRoutes.js";
 dotenv.config();
 const port = process.env.PORT || 5000;
 
-connectDB();
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDb is connected");
+    app.listen(port, () => console.log(`Server running on port: ${port}`));
+  })
+  .catch((err) => {
+    console.log(err);
+    process.exit(1);
+  });
+
+const __dirname = path.resolve();
 
 const app = express();
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://keen-malabi-f3e7cb.netlify.app",
-      "https://mern-store-front-v2ax.onrender.com",
-      "https://mern-store-9oc8.onrender.com",
-      "https://mern-store-9oc8.onrender.com/api",
-    ],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -47,7 +53,11 @@ app.get("/api/config/paypal", (req, res) => {
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID });
 });
 
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
+
 /* const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname + "/uploads"))); */
-
-app.listen(port, () => console.log(`Server running on port: ${port}`));
