@@ -16,8 +16,14 @@ export default ({ mode }) => {
     plugins: [react()],
     server: {
       proxy: {
-        "/api/": process.env.VITE_API_URL || "http://localhost:5000",
-        "/uploads/": process.env.VITE_UPLOADS_URL || "http://localhost:5000",
+        "/api": {
+          target: process.env.VITE_API_URL || "http://localhost:5000",
+          secure: false,
+        },
+        "/uploads": {
+          target: process.env.VITE_UPLOADS_URL || "http://localhost:5000",
+          secure: false,
+        },
       },
     },
   });
